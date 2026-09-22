@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>সহজ মাপজোপ ক্যালকুলেটর - বালি ও মাটি (CFT)</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .calculator-card {
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            max-width: 450px;
+            width: 100%;
+        }
+        h2 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 5px;
+        }
+        p.subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #34495e;
+        }
+        .row {
+            display: flex;
+            gap: 10px;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #219150;
+        }
+        .result-box {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e8f8f5;
+            border-left: 5px solid #27ae60;
+            border-radius: 6px;
+            display: none;
+        }
+        .result-box h3 {
+            margin: 0 0 8px 0;
+            color: #27ae60;
+        }
+        .result-box p {
+            margin: 5px 0;
+            font-size: 16px;
+            color: #2c3e50;
+        }
+    </style>
+</head>
+<body>
+
+<div class="calculator-card">
+    <h2>বালি ও মাটি (CFT) ক্যালকুলেটর</h2>
+    <p class="subtitle">ট্রাক বা গর্তের সঠিক হিসাব ও মোট দাম বের করুন</p>
+
+    <!-- দৈর্ঘ্য -->
+    <div class="input-group">
+        <label>দৈর্ঘ্য:</label>
+        <div class="row">
+            <input type="number" id="lengthFeet" placeholder="ফুট">
+            <input type="number" id="lengthInch" placeholder="ইঞ্চি (ঐচ্ছিক)">
+        </div>
+    </div>
+
+    <!-- প্রস্থ -->
+    <div class="input-group">
+        <label>প্রস্থ:</label>
+        <div class="row">
+            <input type="number" id="lengthWidthFeet" id="widthFeet" placeholder="ফুট">
+            <input type="number" id="widthInch" placeholder="ইঞ্চি (ঐচ্ছিক)">
+        </div>
+    </div>
+
+    <!-- উচ্চতা/গভীরতা -->
+    <div class="input-group">
+        <label>উচ্চতা / গভীরতা:</label>
+        <div class="row">
+            <input type="number" id="heightFeet" placeholder="ফুট">
+            <input type="number" id="heightInch" placeholder="ইঞ্চি (ঐচ্ছিক)">
+        </div>
+    </div>
+
+    <!-- প্রতি CFT এর দাম -->
+    <div class="input-group">
+        <label>প্রতি CFT এর দাম (টাকা):</label>
+        <input type="number" id="rate" placeholder="উদাহরণ: ৩৫ (ঐচ্ছিক)">
+    </div>
+
+    <button onclick="calculateCFT()">হিসাব করুন</button>
+
+    <!-- ফলাফল দেখানোর জায়গা -->
+    <div class="result-box" id="resultBox">
+        <h3>হিসাবের ফলাফল:</h3>
+        <p>মোট মাপে: <strong><span id="totalCFT">0</span> CFT (ঘনফুট)</strong></p>
+        <p id="totalPriceRow" style="display:none;">মোট দাম: <strong><span id="totalPrice">0</span> টাকা</strong></p>
+    </div>
+</div>
+
+<script>
+    function calculateCFT() {
+        let lFeet = parseFloat(document.getElementById('lengthFeet').value) || 0;
+        let lInch = parseFloat(document.getElementById('lengthInch').value) || 0;
+        
+        let wFeet = parseFloat(document.getElementById('widthFeet').value) || 0;
+        let wInch = parseFloat(document.getElementById('widthInch').value) || 0;
+        
+        let hFeet = parseFloat(document.getElementById('heightFeet').value) || 0;
+        let hInch = parseFloat(document.getElementById('heightInch').value) || 0;
+        
+        let rate = parseFloat(document.getElementById('rate').value) || 0;
+
+        let totalLength = lFeet + (lInch / 12);
+        let totalWidth = wFeet + (wInch / 12);
+        let totalHeight = hFeet + (hInch / 12);
+
+        let cft = totalLength * totalWidth * totalHeight;
+
+        if (cft <= 0) {
+            alert("দয়া করে সঠিক দৈর্ঘ্য, প্রস্থ ও উচ্চতার মাপ দিন!");
+            return;
+        }
+
+        document.getElementById('totalCFT').innerText = cft.toFixed(2);
+
+        if (rate > 0) {
+            let price = cft * rate;
+            document.getElementById('totalPrice').innerText = price.toFixed(2);
+            document.getElementById('totalPriceRow').style.display = 'block';
+        } else {
+            document.getElementById('totalPriceRow').style.display = 'none';
+        }
+
+        document.getElementById('resultBox').style.display = 'block';
+    }
+</script>
+
+</body>
+</html>
