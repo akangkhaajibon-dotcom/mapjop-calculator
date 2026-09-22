@@ -1,177 +1,342 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>সহজ মাপজোপ ক্যালকুলেটর - বালি ও মাটি (CFT)</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background-color: #f4f7f6;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-        }
-        .calculator-card {
-            background: #ffffff;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            max-width: 450px;
-            width: 100%;
-        }
-        h2 {
-            color: #2c3e50;
-            text-align: center;
-            margin-bottom: 5px;
-        }
-        p.subtitle {
-            text-align: center;
-            color: #7f8c8d;
-            font-size: 14px;
-            margin-bottom: 20px;
-        }
-        .input-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
-            color: #34495e;
-        }
-        .row {
-            display: flex;
-            gap: 10px;
-        }
-        input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 16px;
-            box-sizing: border-box;
-        }
-        button {
-            width: 100%;
-            padding: 12px;
-            background-color: #27ae60;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-        button:hover {
-            background-color: #219150;
-        }
-        .result-box {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: #e8f8f5;
-            border-left: 5px solid #27ae60;
-            border-radius: 6px;
-            display: none;
-        }
-        .result-box h3 {
-            margin: 0 0 8px 0;
-            color: #27ae60;
-        }
-        .result-box p {
-            margin: 5px 0;
-            font-size: 16px;
-            color: #2c3e50;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>মাল্টি-পারপাস কনস্ট্রাকশন ও ল্যান্ড ক্যালকুলেটর</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background-color: #f4f7f6;
+      margin: 0;
+      padding: 15px;
+      display: flex;
+      justify-content: center;
+    }
+    .calculator-card {
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      max-width: 500px;
+      width: 100%;
+    }
+    h2 {
+      color: #2c3e50;
+      text-align: center;
+      margin-top: 0;
+      margin-bottom: 5px;
+      font-size: 22px;
+    }
+    p.subtitle {
+      text-align: center;
+      color: #7f8c8d;
+      font-size: 13px;
+      margin-bottom: 15px;
+    }
+    .nav-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-bottom: 15px;
+      border-bottom: 2px solid #ddd;
+      padding-bottom: 10px;
+    }
+    .tab-btn {
+      flex: 1 1 30%;
+      padding: 8px 5px;
+      background: #e0e6ed;
+      border: none;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: bold;
+      color: #333;
+      cursor: pointer;
+      text-align: center;
+    }
+    .tab-btn.active {
+      background: #27ae60;
+      color: #fff;
+    }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .input-group { margin-bottom: 12px; }
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 4px;
+      color: #34495e;
+      font-size: 14px;
+    }
+    .row { display: flex; gap: 8px; }
+    input, select {
+      width: 100%;
+      padding: 9px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+    button.calc-btn {
+      width: 100%;
+      padding: 11px;
+      background-color: #27ae60;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    button.calc-btn:hover { background-color: #219150; }
+    .result-box {
+      margin-top: 15px;
+      padding: 12px;
+      background-color: #e8f8f5;
+      border-left: 5px solid #27ae60;
+      border-radius: 6px;
+      display: none;
+    }
+    .result-box h3 { margin: 0 0 8px 0; color: #27ae60; font-size: 16px; }
+    .result-box p { margin: 4px 0; font-size: 14px; color: #2c3e50; }
+  </style>
 </head>
 <body>
 
 <div class="calculator-card">
-    <h2>বালি ও মাটি (CFT) ক্যালকুলেটর</h2>
-    <p class="subtitle">ট্রাক বা গর্তের সঠিক হিসাব ও মোট দাম বের করুন</p>
+  <h2>সব হিসাব একসাথে</h2>
+  <p class="subtitle">জমি, কনস্ট্রাকশন ও পরিমাপের সহজ সমাধান</p>
 
-    <!-- দৈর্ঘ্য -->
+  <div class="nav-tabs">
+    <button class="tab-btn active" onclick="switchTab('sand')">বালু ও মাটি</button>
+    <button class="tab-btn" onclick="switchTab('land')">জমির হিসাব</button>
+    <button class="tab-btn" onclick="switchTab('tree')">গাছের হিসাব</button>
+    <button class="tab-btn" onclick="switchTab('brick')">ইটের গাথুনি</button>
+    <button class="tab-btn" onclick="switchTab('building')">বিল্ডিং স্কয়ার ফিট</button>
+    <button class="tab-btn" onclick="switchTab('road')">রাস্তার দৈর্ঘ্য</button>
+  </div>
+
+  <!-- ১. বালু ও মাটি -->
+  <div id="tab-sand" class="tab-content active">
     <div class="input-group">
-        <label>দৈর্ঘ্য:</label>
-        <div class="row">
-            <input type="number" id="lengthFeet" placeholder="ফুট">
-            <input type="number" id="lengthInch" placeholder="ইঞ্চি (ঐচ্ছিক)">
-        </div>
+      <label>দৈর্ঘ্য:</label>
+      <div class="row">
+        <input type="number" id="sand_l_ft" placeholder="ফুট">
+        <input type="number" id="sand_l_in" placeholder="ইঞ্চি (ঐচ্ছিক)">
+      </div>
     </div>
-
-    <!-- প্রস্থ -->
     <div class="input-group">
-        <label>প্রস্থ:</label>
-        <div class="row">
-            <input type="number" id="lengthWidthFeet" id="widthFeet" placeholder="ফুট">
-            <input type="number" id="widthInch" placeholder="ইঞ্চি (ঐচ্ছিক)">
-        </div>
+      <label>প্রস্থ:</label>
+      <div class="row">
+        <input type="number" id="sand_w_ft" placeholder="ফুট">
+        <input type="number" id="sand_w_in" placeholder="ইঞ্চি (ঐচ্ছিক)">
+      </div>
     </div>
-
-    <!-- উচ্চতা/গভীরতা -->
     <div class="input-group">
-        <label>উচ্চতা / গভীরতা:</label>
-        <div class="row">
-            <input type="number" id="heightFeet" placeholder="ফুট">
-            <input type="number" id="heightInch" placeholder="ইঞ্চি (ঐচ্ছিক)">
-        </div>
+      <label>উচ্চতা / গভীরতা:</label>
+      <div class="row">
+        <input type="number" id="sand_h_ft" placeholder="ফুট">
+        <input type="number" id="sand_h_in" placeholder="ইঞ্চি (ঐচ্ছিক)">
+      </div>
     </div>
-
-    <!-- প্রতি CFT এর দাম -->
     <div class="input-group">
-        <label>প্রতি CFT এর দাম (টাকা):</label>
-        <input type="number" id="rate" placeholder="উদাহরণ: ৩৫ (ঐচ্ছিক)">
+      <label>প্রতি CFT এর দাম (টাকা):</label>
+      <input type="number" id="sand_rate" placeholder="ঐচ্ছিক">
     </div>
+    <button class="calc-btn" onclick="calcSand()">হিসাব করুন</button>
+    <div id="res-sand" class="result-box"></div>
+  </div>
 
-    <button onclick="calculateCFT()">হিসাব করুন</button>
-
-    <!-- ফলাফল দেখানোর জায়গা -->
-    <div class="result-box" id="resultBox">
-        <h3>হিসাবের ফলাফল:</h3>
-        <p>মোট মাপে: <strong><span id="totalCFT">0</span> CFT (ঘনফুট)</strong></p>
-        <p id="totalPriceRow" style="display:none;">মোট দাম: <strong><span id="totalPrice">0</span> টাকা</strong></p>
+  <!-- ২. জমির হিসাব -->
+  <div id="tab-land" class="tab-content">
+    <div class="input-group">
+      <label>গড় দৈর্ঘ্য (ফুট):</label>
+      <input type="number" id="land_l" placeholder="ফুট">
     </div>
+    <div class="input-group">
+      <label>গড় প্রস্থ (ফুট):</label>
+      <input type="number" id="land_w" placeholder="ফুট">
+    </div>
+    <button class="calc-btn" onclick="calcLand()">হিসাব করুন</button>
+    <div id="res-land" class="result-box"></div>
+  </div>
+
+  <!-- ৩. গাছের হিসাব -->
+  <div id="tab-tree" class="tab-content">
+    <div class="input-group">
+      <label>গোলের পরিধি (ইঞ্চি):</label>
+      <input type="number" id="tree_g" placeholder="ইঞ্চি">
+    </div>
+    <div class="input-group">
+      <label>লম্বা / দৈর্ঘ্য (ফুট):</label>
+      <input type="number" id="tree_l" placeholder="ফুট">
+    </div>
+    <div class="input-group">
+      <label>প্রতি CFT এর দাম (টাকা):</label>
+      <input type="number" id="tree_rate" placeholder="ঐচ্ছিক">
+    </div>
+    <button class="calc-btn" onclick="calcTree()">হিসাব করুন</button>
+    <div id="res-tree" class="result-box"></div>
+  </div>
+
+  <!-- ৪. ইটের গাথুনি -->
+  <div id="tab-brick" class="tab-content">
+    <div class="input-group">
+      <label>দেয়ালের দৈর্ঘ্য (ফুট):</label>
+      <input type="number" id="brick_l" placeholder="ফুট">
+    </div>
+    <div class="input-group">
+      <label>দেয়ালের উচ্চতা (ফুট):</label>
+      <input type="number" id="brick_h" placeholder="ফুট">
+    </div>
+    <div class="input-group">
+      <label>গাথুনির পুরুত্ব/সাইজ:</label>
+      <select id="brick_thick">
+        <option value="5">৫ ইঞ্চি গাথুনি</option>
+        <option value="10">১০ ইঞ্চি গাথুনি</option>
+      </select>
+    </div>
+    <button class="calc-btn" onclick="calcBrick()">হিসাব করুন</button>
+    <div id="res-brick" class="result-box"></div>
+  </div>
+
+  <!-- ৫. বিল্ডিং স্কয়ার ফিট -->
+  <div id="tab-building" class="tab-content">
+    <div class="input-group">
+      <label>বিল্ডিংয়ের দৈর্ঘ্য (ফুট):</label>
+      <input type="number" id="bldg_l" placeholder="ফুট">
+    </div>
+    <div class="input-group">
+      <label>বিল্ডিংয়ের প্রস্থ (ফুট):</label>
+      <input type="number" id="bldg_w" placeholder="ফুট">
+    </div>
+    <div class="input-group">
+      <label>প্রতি স্কয়ার ফিট নির্মাণ খরচ (টাকা):</label>
+      <input type="number" id="bldg_rate" placeholder="ঐচ্ছিক (যেমন: ১৮০০)">
+    </div>
+    <button class="calc-btn" onclick="calcBuilding()">হিসাব করুন</button>
+    <div id="res-building" class="result-box"></div>
+  </div>
+
+  <!-- ৬. রাস্তার দৈর্ঘ্য -->
+  <div id="tab-road" class="tab-content">
+    <div class="input-group">
+      <label>কিলোমিটার (KM):</label>
+      <input type="number" id="road_km" placeholder="কিলোমিটার লিখুন" oninput="roadKmToFt()">
+    </div>
+    <div class="input-group">
+      <label>ফুট (Feet):</label>
+      <input type="number" id="road_ft" placeholder="ফুট লিখুন" oninput="roadFtToKm()">
+    </div>
+    <div id="res-road" class="result-box" style="display:block;">
+      <h3>টিপস:</h3>
+      <p>১ কিলোমিটার = ৩২৮০.৮৪ ফুট</p>
+    </div>
+  </div>
+
 </div>
 
 <script>
-    function calculateCFT() {
-        let lFeet = parseFloat(document.getElementById('lengthFeet').value) || 0;
-        let lInch = parseFloat(document.getElementById('lengthInch').value) || 0;
-        
-        let wFeet = parseFloat(document.getElementById('widthFeet').value) || 0;
-        let wInch = parseFloat(document.getElementById('widthInch').value) || 0;
-        
-        let hFeet = parseFloat(document.getElementById('heightFeet').value) || 0;
-        let hInch = parseFloat(document.getElementById('heightInch').value) || 0;
-        
-        let rate = parseFloat(document.getElementById('rate').value) || 0;
+  function switchTab(tabId) {
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+    document.getElementById('tab-' + tabId).classList.add('active');
+    event.target.classList.add('active');
+  }
 
-        let totalLength = lFeet + (lInch / 12);
-        let totalWidth = wFeet + (wInch / 12);
-        let totalHeight = hFeet + (hInch / 12);
+  function calcSand() {
+    let l_ft = parseFloat(document.getElementById('sand_l_ft').value) || 0;
+    let l_in = parseFloat(document.getElementById('sand_l_in').value) || 0;
+    let w_ft = parseFloat(document.getElementById('sand_w_ft').value) || 0;
+    let w_in = parseFloat(document.getElementById('sand_w_in').value) || 0;
+    let h_ft = parseFloat(document.getElementById('sand_h_ft').value) || 0;
+    let h_in = parseFloat(document.getElementById('sand_h_in').value) || 0;
+    let rate = parseFloat(document.getElementById('sand_rate').value) || 0;
 
-        let cft = totalLength * totalWidth * totalHeight;
+    let total_l = l_ft + (l_in / 12);
+    let total_w = w_ft + (w_in / 12);
+    let total_h = h_ft + (h_in / 12);
 
-        if (cft <= 0) {
-            alert("দয়া করে সঠিক দৈর্ঘ্য, প্রস্থ ও উচ্চতার মাপ দিন!");
-            return;
-        }
+    let cft = total_l * total_w * total_h;
+    let priceText = rate > 0 ? `<p><strong>মোট দাম:</strong> ${(cft * rate).toFixed(2)} টাকা</p>` : '';
 
-        document.getElementById('totalCFT').innerText = cft.toFixed(2);
+    let res = document.getElementById('res-sand');
+    res.style.display = 'block';
+    res.innerHTML = `<h3>ফলাফল:</h3><p><strong>মোট পরিমাণ:</strong> ${cft.toFixed(2)} CFT</p>${priceText}`;
+  }
 
-        if (rate > 0) {
-            let price = cft * rate;
-            document.getElementById('totalPrice').innerText = price.toFixed(2);
-            document.getElementById('totalPriceRow').style.display = 'block';
-        } else {
-            document.getElementById('totalPriceRow').style.display = 'none';
-        }
+  function calcLand() {
+    let l = parseFloat(document.getElementById('land_l').value) || 0;
+    let w = parseFloat(document.getElementById('land_w').value) || 0;
+    let sqft = l * w;
 
-        document.getElementById('resultBox').style.display = 'block';
-    }
+    let shotok = sqft / 435.6;
+    let katha = sqft / 720;
+    let chotak = sqft / 45;
+
+    let res = document.getElementById('res-land');
+    res.style.display = 'block';
+    res.innerHTML = `<h3>ফলাফল:</h3>
+      <p><strong>মোট ক্ষেত্রফল:</strong> ${sqft.toFixed(2)} বর্গফুট</p>
+      <p><strong>শতক (ডিসিমল):</strong> ${shotok.toFixed(3)} শতক</p>
+      <p><strong>কাঠা:</strong> ${katha.toFixed(3)} কাঠা</p>
+      <p><strong>ছটাক:</strong> ${chotak.toFixed(2)} ছটাক</p>`;
+  }
+
+  function calcTree() {
+    let g = parseFloat(document.getElementById('tree_g').value) || 0;
+    let l = parseFloat(document.getElementById('tree_l').value) || 0;
+    let rate = parseFloat(document.getElementById('tree_rate').value) || 0;
+
+    // Quarter girth formula: ((G/4)^2 * L) / 144
+    let cft = ((g / 4) * (g / 4) * l) / 144;
+    let priceText = rate > 0 ? `<p><strong>মোট আনুমানিক দাম:</strong> ${(cft * rate).toFixed(2)} টাকা</p>` : '';
+
+    let res = document.getElementById('res-tree');
+    res.style.display = 'block';
+    res.innerHTML = `<h3>ফলাফল:</h3><p><strong>মোট কাঠের পরিমাণ:</strong> ${cft.toFixed(2)} CFT</p>${priceText}`;
+  }
+
+  function calcBrick() {
+    let l = parseFloat(document.getElementById('brick_l').value) || 0;
+    let h = parseFloat(document.getElementById('brick_h').value) || 0;
+    let thick = document.getElementById('brick_thick').value;
+
+    let sqft = l * h;
+    let bricks = thick == '5' ? sqft * 5 : sqft * 10;
+    let cementBag = (sqft * (thick == '5' ? 0.02 : 0.04)).toFixed(1);
+
+    let res = document.getElementById('res-brick');
+    res.style.display = 'block';
+    res.innerHTML = `<h3>ফলাফল:</h3>
+      <p><strong>দেয়ালের ক্ষেত্রফল:</strong> ${sqft.toFixed(2)} স্কয়ার ফিট</p>
+      <p><strong>প্রয়োজনীয় ইট:</strong> আনুমানিক ${Math.ceil(bricks)} টি</p>
+      <p><strong>প্রয়োজনীয় সিমেন্ট:</strong> আনুমানিক ${cementBag} ব্যাগ</p>`;
+  }
+
+  function calcBuilding() {
+    let l = parseFloat(document.getElementById('bldg_l').value) || 0;
+    let w = parseFloat(document.getElementById('bldg_w').value) || 0;
+    let rate = parseFloat(document.getElementById('bldg_rate').value) || 0;
+
+    let sqft = l * w;
+    let priceText = rate > 0 ? `<p><strong>মোট আনুমানিক খরচ:</strong> ${(sqft * rate).toLocaleString()} টাকা</p>` : '';
+
+    let res = document.getElementById('res-building');
+    res.style.display = 'block';
+    res.innerHTML = `<h3>ফলাফল:</h3><p><strong>মোট এরিয়া:</strong> ${sqft.toFixed(2)} স্কয়ার ফিট (Sq Ft)</p>${priceText}`;
+  }
+
+  function roadKmToFt() {
+    let km = parseFloat(document.getElementById('road_km').value) || 0;
+    document.getElementById('road_ft').value = (km * 3280.84).toFixed(2);
+  }
+
+  function roadFtToKm() {
+    let ft = parseFloat(document.getElementById('road_ft').value) || 0;
+    document.getElementById('road_km').value = (ft / 3280.84).toFixed(4);
+  }
 </script>
 
 </body>
