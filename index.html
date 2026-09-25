@@ -17,11 +17,11 @@
     label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 4px; color: #475569; }
     .side-label { font-size: 14px; font-weight: bold; color: #0f172a; margin-top: 10px; margin-bottom: 4px; }
     .input-row { display: flex; gap: 8px; }
-    input { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; outline: none; }
-    input:focus { border-color: #10b981; }
+    input, select { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; outline: none; background: #fff; }
+    input:focus, select:focus { border-color: #10b981; }
     .submit-btn { width: 100%; background: #10b981; color: white; border: none; padding: 12px; font-size: 16px; font-weight: bold; border-radius: 6px; cursor: pointer; margin-top: 10px; }
     .submit-btn:hover { background: #059669; }
-    .result-box { margin-top: 15px; padding: 12px; background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 6px; color: #065f46; display: none; }
+    .result-box { margin-top: 15px; padding: 12px; background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 6px; color: #065f46; display: none; line-height: 1.6; }
     .tab-content { display: none; }
     .tab-content.active { display: block; }
   </style>
@@ -41,7 +41,7 @@
     <button class="nav-btn" onclick="openTab('road')">রাস্তার দৈর্ঘ্য</button>
   </div>
 
-  <!-- ১. জমির হিসাব (৪ দিকের পরিমাপ) -->
+  <!-- ১. জমির হিসাব -->
   <div id="land" class="tab-content active">
     <div class="side-label">উত্তর দিক:</div>
     <div class="input-row form-group">
@@ -63,11 +63,15 @@
       <input type="number" id="land_w_ft" placeholder="ফুট">
       <input type="number" id="land_w_in" placeholder="ইঞ্চি">
     </div>
+    <div class="form-group" style="margin-top: 10px;">
+      <label>প্রতি শতাংশ জমির দাম (টাকা):</label>
+      <input type="number" id="land_price" placeholder="ঐচ্ছিক (যেমন: ৫০ক০০০)">
+    </div>
     <button class="submit-btn" onclick="calcLand()">হিসাব করুন</button>
     <div id="land_res" class="result-box"></div>
   </div>
 
-  <!-- ২. বিল্ডিং স্কয়ার ফিট (ছাদ/বিল্ডিংয়ের ৪ দিকের পরিমাপ) -->
+  <!-- ২. বিল্ডিং স্কয়ার ফিট -->
   <div id="building" class="tab-content">
     <div class="side-label">উত্তর দিক:</div>
     <div class="input-row form-group">
@@ -97,7 +101,32 @@
     <div id="bld_res" class="result-box"></div>
   </div>
 
-  <!-- ৩. বালু ও মাটি -->
+  <!-- ৩. ইটের গাথুনি (৫ ইঞ্চ ও ১০ ইঞ্চি যোগ করা হয়েছে) -->
+  <div id="brick" class="tab-content">
+    <div class="form-group">
+      <label>ওয়ালের পুরুত্ব/টাইপ:</label>
+      <select id="brk_type">
+        <option value="5">৫ ইঞ্চি ওয়ালের গাথুনি</option>
+        <option value="10">১০ ইঞ্চি ওয়ালের গাথুনি</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>ওয়ালের দৈর্ঘ্য (ফুট):</label>
+      <input type="number" id="brk_l" placeholder="ফুট">
+    </div>
+    <div class="form-group">
+      <label>ওয়ালের উচ্চতা (ফুট):</label>
+      <input type="number" id="brk_h" placeholder="ফুট">
+    </div>
+    <div class="form-group">
+      <label>প্রতিটি ইটের দাম (টাকা):</label>
+      <input type="number" id="brk_price" placeholder="ঐচ্ছিক (যেমন: ১২)">
+    </div>
+    <button class="submit-btn" onclick="calcBrick()">হিসাব করুন</button>
+    <div id="brick_res" class="result-box"></div>
+  </div>
+
+  <!-- ৪. বালু ও মাটি -->
   <div id="sand" class="tab-content">
     <div class="form-group">
       <label>দৈর্ঘ্য:</label>
@@ -111,11 +140,15 @@
       <label>উচ্চতা / গভীরতা:</label>
       <div class="input-row"><input type="number" id="s_h_ft" placeholder="ফুট"><input type="number" id="s_h_in" placeholder="ইঞ্চি"></div>
     </div>
+    <div class="form-group">
+      <label>প্রতি CFT এর দাম (টাকা):</label>
+      <input type="number" id="sand_price" placeholder="ঐচ্ছিক (যেমন: ৫০)">
+    </div>
     <button class="submit-btn" onclick="calcSand()">হিসাব করুন</button>
     <div id="sand_res" class="result-box"></div>
   </div>
 
-  <!-- ৪. গাছের হিসাব -->
+  <!-- ৫. গাছের হিসাব -->
   <div id="tree" class="tab-content">
     <div class="form-group">
       <label>গাছের বেড়/পরিধি (ইঞ্চি):</label>
@@ -125,22 +158,12 @@
       <label>গাছের লম্বা/দৈর্ঘ্য (ফুট):</label>
       <input type="number" id="tree_l" placeholder="ফুট">
     </div>
+    <div class="form-group">
+      <label>প্রতি CFT কাঠের দাম (টাকা):</label>
+      <input type="number" id="tree_price" placeholder="ঐচ্ছিক (যেমন: ১২০০)">
+    </div>
     <button class="submit-btn" onclick="calcTree()">হিসাব করুন</button>
     <div id="tree_res" class="result-box"></div>
-  </div>
-
-  <!-- ৫. ইটের গাথুনি -->
-  <div id="brick" class="tab-content">
-    <div class="form-group">
-      <label>ওয়ালের দৈর্ঘ্য (ফুট):</label>
-      <input type="number" id="brk_l" placeholder="ফুট">
-    </div>
-    <div class="form-group">
-      <label>ওয়ালের উচ্চতা (ফুট):</label>
-      <input type="number" id="brk_h" placeholder="ফুট">
-    </div>
-    <button class="submit-btn" onclick="calcBrick()">হিসাব করুন</button>
-    <div id="brick_res" class="result-box"></div>
   </div>
 
   <!-- ৬. রাস্তার দৈর্ঘ্য -->
@@ -171,15 +194,16 @@
     return ft + (inch / 12);
   }
 
-  // জমির হিসাব
+  // ১. জমির হিসাব
   function calcLand() {
     let n = getFeet('land_n_ft', 'land_n_in');
     let s = getFeet('land_s_ft', 'land_s_in');
     let e = getFeet('land_e_ft', 'land_e_in');
     let w = getFeet('land_w_ft', 'land_w_in');
+    let pricePerShotangsho = parseFloat(document.getElementById('land_price').value) || 0;
 
     if((n==0 && s==0) || (e==0 && w==0)) {
-      alert("অনুগ্রহ করে চারদিকের পরিমাপ সঠিকভাব লিখুন");
+      alert("অনুগ্রহ করে চারদিকের পরিমাপ লিখুন");
       return;
     }
 
@@ -192,14 +216,21 @@
 
     let resBox = document.getElementById('land_res');
     resBox.style.display = 'block';
-    resBox.innerHTML = `
+    let html = `
       <b>মোট ক্ষেত্রফল:</b> ${sqft.toFixed(2)} স্কয়ার ফিট<br>
       <b>জমির পরিমাণ:</b> ${shotangsho.toFixed(3)} শতাংশ (ডেসিমেল)<br>
       <b>জমির পরিমাণ:</b> ${katha.toFixed(3)} কাঠা
     `;
+
+    if(pricePerShotangsho > 0) {
+      let totalPrice = shotangsho * pricePerShotangsho;
+      html += `<br><b>আনুমানিক মোট জমির দাম:</b> ৳ ${totalPrice.toLocaleString('bn-BD', {maximumFractionDigits: 2})}`;
+    }
+
+    resBox.innerHTML = html;
   }
 
-  // বিল্ডিং স্কয়ার ফিট
+  // ২. বিল্ডিং স্কয়ার ফিট
   function calcBuilding() {
     let n = getFeet('bld_n_ft', 'bld_n_in');
     let s = getFeet('bld_s_ft', 'bld_s_in');
@@ -228,42 +259,76 @@
     resBox.innerHTML = text;
   }
 
-  // বালু ও মাটি
+  // ৩. ইটের গাথুনি (৫" ও ১০" দেয়াল)
+  function calcBrick() {
+    let type = document.getElementById('brk_type').value;
+    let l = parseFloat(document.getElementById('brk_l').value) || 0;
+    let h = parseFloat(document.getElementById('brk_h').value) || 0;
+    let brickPrice = parseFloat(document.getElementById('brk_price').value) || 0;
+
+    if(l <= 0 || h <= 0) {
+      alert("ওয়ালের সঠিক দৈর্ঘ্য ও উচ্চতা দিন");
+      return;
+    }
+
+    let sqft = l * h;
+    let multiplier = (type === "10") ? 10 : 5; // ৫ ইঞ্চি ওয়ালের জন্য ৫টি, ১০ ইঞ্চি ওয়ালের জন্য ১০টি ইট
+    let totalBricks = Math.ceil(sqft * multiplier);
+
+    let resBox = document.getElementById('brick_res');
+    resBox.style.display = 'block';
+    let html = `
+      <b>ওয়ালের আয়তন:</b> ${sqft.toFixed(2)} স্কয়ার ফিট<br>
+      <b>গাতুনির টাইপ:</b> ${type} ইঞ্চি দেয়াল<br>
+      <b>মোট আনুমানিক ইট লাগবে:</b> ${totalBricks} টি
+    `;
+
+    if(brickPrice > 0) {
+      let totalCost = totalBricks * brickPrice;
+      html += `<br><b>ইটের মোট আনুমানিক খরচ:</b> ৳ ${totalCost.toLocaleString('bn-BD', {maximumFractionDigits: 2})}`;
+    }
+
+    resBox.innerHTML = html;
+  }
+
+  // ৪. বালু ও মাটি
   function calcSand() {
     let l = getFeet('s_l_ft', 's_l_in');
     let w = getFeet('s_w_ft', 's_w_in');
     let h = getFeet('s_h_ft', 's_h_in');
+    let pricePerCft = parseFloat(document.getElementById('sand_price').value) || 0;
+
     let cft = l * w * h;
     let resBox = document.getElementById('sand_res');
     resBox.style.display = 'block';
-    resBox.innerHTML = `<b>মোট পরিমাণ:</b> ${cft.toFixed(2)} CFT (ঘনফুট)`;
+
+    let html = `<b>মোট পরিমাণ:</b> ${cft.toFixed(2)} CFT (ঘনফুট)`;
+    if(pricePerCft > 0) {
+      let total = cft * pricePerCft;
+      html += `<br><b>মোট আনুমানিক মূল্য:</b> ৳ ${total.toLocaleString('bn-BD', {maximumFractionDigits: 2})}`;
+    }
+    resBox.innerHTML = html;
   }
 
-  // গাছের হিসাব (কোয়ার্টার গার্থ ফর্মুলা)
+  // ৫. গাছের হিসাব
   function calcTree() {
     let g = parseFloat(document.getElementById('tree_g').value) || 0;
     let l = parseFloat(document.getElementById('tree_l').value) || 0;
+    let treePrice = parseFloat(document.getElementById('tree_price').value) || 0;
+
     let cft = ((g / 4) * (g / 4) * l) / 144;
     let resBox = document.getElementById('tree_res');
     resBox.style.display = 'block';
-    resBox.innerHTML = `<b>কাঠের পরিমাণ:</b> ${cft.toFixed(2)} CFT`;
+
+    let html = `<b>কাঠের পরিমাণ:</b> ${cft.toFixed(2)} CFT`;
+    if(treePrice > 0) {
+      let total = cft * treePrice;
+      html += `<br><b>কাঠের মোট আনুমানিক মূল্য:</b> ৳ ${total.toLocaleString('bn-BD', {maximumFractionDigits: 2})}`;
+    }
+    resBox.innerHTML = html;
   }
 
-  // ইটের গাথুনি
-  function calcBrick() {
-    let l = parseFloat(document.getElementById('brk_l').value) || 0;
-    let h = parseFloat(document.getElementById('brk_h').value) || 0;
-    let sqft = l * h;
-    let bricks5 = sqft * 5; // ৫ ইঞ্চি ওয়ালের জন্য
-    let resBox = document.getElementById('brick_res');
-    resBox.style.display = 'block';
-    resBox.innerHTML = `
-      <b>ওয়ালের আয়তন:</b> ${sqft.toFixed(2)} স্কয়ার ফিট<br>
-      <b>৫ ইঞ্চি ওয়ালে আনুমানিক ইট লাগবে:</b> ${Math.ceil(bricks5)} টি
-    `;
-  }
-
-  // রাস্তার দৈর্ঘ্য
+  // ৬. রাস্তার দৈর্ঘ্য
   function calcRoad() {
     let l = parseFloat(document.getElementById('road_l').value) || 0;
     let meter = l * 0.3048;
