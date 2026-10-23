@@ -2,14 +2,6 @@
   "short_name": "Mapjop",
   "name": "Mapjop Calculator",
   "description": "Land, Construction and Measurement Calculator App",
-  "icons": [
-    {
-      "src": "favicon.png",
-      "type": "image/png",
-      "sizes": "192x192 512x512",
-      "purpose": "any maskable"
-    }
-  ],
   "start_url": "/",
   "background_color": "#ffffff",
   "theme_color": "#10b981",
