@@ -4,14 +4,14 @@
   "description": "Land, Construction and Measurement Calculator App",
   "icons": [
     {
-      "src": "/favicon.png",
-      "type": "image/jpeg",
+      "src": "/launchericon-192x192.png",
+      "type": "image/png",
       "sizes": "192x192",
       "purpose": "any"
     },
     {
-      "src": "/favicon.png",
-      "type": "image/jpeg",
+      "src": "/launchericon-512x512.png",
+      "type": "image/png",
       "sizes": "512x512",
       "purpose": "any"
     }
