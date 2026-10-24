@@ -6,7 +6,13 @@
     {
       "src": "/favicon.png",
       "type": "image/jpeg",
-      "sizes": "192x192 512x512",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon.png",
+      "type": "image/jpeg",
+      "sizes": "512x512",
       "purpose": "any maskable"
     }
   ],
