@@ -4,7 +4,7 @@
   "description": "Land, Construction and Measurement Calculator App",
   "icons": [
     {
-      "src": "https://via.placeholder.com/512.png",
+      "src": "/favicon.png",
       "type": "image/png",
       "sizes": "192x192 512x512",
       "purpose": "any maskable"
