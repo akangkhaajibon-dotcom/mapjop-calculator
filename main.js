@@ -8,8 +8,8 @@ inject();
 injectSpeedInsights();
 
 // --- Mapjop AdMob Configuration ---
-// App ID: ca-app-pub-3737361719169619~8191310822
-// Rewarded Ad Unit ID: ca-app-pub-3737361719169619/1001076037[span_1](start_span)[span_1](end_span)
+// App ID: ca-app-pub-3757361719169619~6191316822
+// Rewarded Ad Unit ID: ca-app-pub-3757361719169619/1001076037[span_1](start_span)[span_1](end_span)
 
 document.addEventListener('DOMContentLoaded', () => {
     const calculateBtn = document.getElementById('calculate-btn'); 
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // অ্যাড প্রদর্শনের ফাংশন
 function showAdAndCalculate(onAdComplete) {
-    const REWARDED_AD_ID = "ca-app-pub-3737361719169619/1001076037"; //[span_2](start_span)[span_2](end_span) সঠিক আইডি বসানো হলো
+    const REWARDED_AD_ID = "ca-app-pub-3757361719169619/1001076037"; //[span_2](start_span)[span_2](end_span) সঠিক আইডি বসানো হলো
     
     // আপাতত পরীক্ষার জন্য কনফার্মেশন পপআপ (সঠিক আইডি সহ)
     let adWatched = confirm("বিজ্ঞাপন চলছে... (বিজ্ঞাপনটি সম্পূর্ণ দেখলে হিসাব দেখতে পাবেন)। Ad ID: " + REWARDED_AD_ID);
