@@ -8,49 +8,48 @@ inject();
 injectSpeedInsights();
 
 // --- Mapjop AdMob Configuration ---
-// App ID: ca-app-pub-3737361719169619~8191310822[span_1](start_span)[span_1](end_span)
-// Rewarded Ad Unit ID: ca-app-pub-3737361719169619/1001070037[span_2](start_span)[span_2](end_span)
+// App ID: ca-app-pub-3737361719169619~8191310822
+// Rewarded Ad Unit ID: ca-app-pub-3737361719169619/1001076037[span_1](start_span)[span_1](end_span)
 
-// --- Mapjop offline na online ad logic ---
 document.addEventListener('DOMContentLoaded', () => {
     const calculateBtn = document.getElementById('calculate-btn'); 
     
     if (calculateBtn) {
         calculateBtn.addEventListener('click', function(e) {
             
-            // 1. Reba niba hari interineti
+            // ১. চেক করা হচ্ছে ইন্টারনেটের সাথে কানেকশন আছে কি না
             if (navigator.onLine) {
-                console.log("Interineti irahari, rekame irerekana...");
+                console.log("ইন্টারনেট কানেকশন আছে, অ্যাড দেখানো হচ্ছে...");
                 
-                // 2. Niba ihari, erekanira rekame mbere yo kubara
+                // ২. অনলাইন থাকলে অ্যাড দেখিয়ে তারপর হিসাব দেখাবে
                 showAdAndCalculate(() => {
                     executeActualCalculation();
                 });
                 
             } else {
-                // 3. Niba nta interineti ihari (offline), kora ibarura ako kanya
-                console.log("Offline mode: Kubara bikozwe ako kanya.");
+                // ৩. অফলাইন থাকলে কোনো অ্যাড দেখাবে না, সরাসরি হিসাব করে ফলাফল দেবে
+                console.log("অফলাইন মোড: সরাসরি হিসাব করা হচ্ছে।");
                 executeActualCalculation();
             }
         });
     }
 });
 
-// Aho rekame yerekanyirizwa
+// অ্যাড প্রদর্শনের ফাংশন
 function showAdAndCalculate(onAdComplete) {
-    // Gukoresha Rewarded Ad Unit ID yawe: ca-app-pub-3737361719169619/1001070037[span_3](start_span)[span_3](end_span)
-    const REWARDED_AD_ID = "ca-app-pub-3737361719169619/1001070037";
+    const REWARDED_AD_ID = "ca-app-pub-3737361719169619/1001076037"; //[span_2](start_span)[span_2](end_span) সঠিক আইডি বসানো হলো
     
-    let adWatched = confirm("Rekame irimo gukinishwa... (Nyuma yo kuyireba urabona ibisubizo by'ibarura). ID: " + REWARDED_AD_ID);
+    // আপাতত পরীক্ষার জন্য কনফার্মেশন পপআপ (সঠিক আইডি সহ)
+    let adWatched = confirm("বিজ্ঞাপন চলছে... (বিজ্ঞাপনটি সম্পূর্ণ দেখলে হিসাব দেখতে পাবেন)। Ad ID: " + REWARDED_AD_ID);
     
     if (adWatched) {
-        onAdComplete(); // Iyo urebye rekame, ibarura rirakomeza
+        onAdComplete(); 
     } else {
-        alert("Wanze kureba rekame, bityo ibarura ntiriri bushyirwe ahagaragara.");
+        alert("বিজ্ঞাপন দেখা বাতিল করা হয়েছে, তাই হিসাব দেখানো যাচ্ছে না।");
     }
 }
 
-// Imikorere y'ibarura nyirizina
+// আপনার মূল হিসাবের ফাংশন
 function executeActualCalculation() {
-    console.log("Ibisubizo by'ibarura birimo kugaragara...");
+    console.log("হিসাবের ফলাফল দেখানো হচ্ছে...");
 }
